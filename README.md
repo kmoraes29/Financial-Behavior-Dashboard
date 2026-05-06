@@ -17,19 +17,19 @@ simples);
 #### Requisitos Técnicos
 Cada equipe precisa aplicar TODOS os módulos da formação com os seguintes conceitos: 
 ● Dados (simulados ou reais) 
-○ Uso de JSON local ou API pública (ex: dados financeiros simples); 
-○ Estruturação de dados coerente; 
-○ Documentação da origem ou simulação; 
+- Uso de JSON local ou API pública (ex: dados financeiros simples); 
+- Estruturação de dados coerente; 
+- Documentação da origem ou simulação; 
 ● Lógica em JavaScript 
-○ Cálculos financeiros (saldo, variação, média); 
-○ Processamento de dados 
-○ Geração de insights automáticos 
-○ Detecção de padrões de comportamento; 
+- Cálculos financeiros (saldo, variação, média); 
+- Processamento de dados 
+- Geração de insights automáticos 
+- Detecção de padrões de comportamento; 
 ● Frontend (React + HTML/CSS) 
-○ Interface funcional e responsiva; 
-○ Componentização; 
-○ Consumo de dados (local ou API); 
-○ Visualização clara dos insights (cards, listas, gráficos); 
+- Interface funcional e responsiva; 
+- Componentização; 
+- Consumo de dados (local ou API); 
+- Visualização clara dos insights (cards, listas, gráficos); 
 
 ### Entregável Final:
 Cada equipe deverá entregar um documento (PDF ou DOC) contendo: 
@@ -41,9 +41,9 @@ Cada equipe deverá entregar um documento (PDF ou DOC) contendo:
 ● Estrutura dos dados (JSON ou API); 
 ● Prints da aplicação React; 
 ● Interface: 
-○ Link do projeto (se hospedado) ou repositório; 
-○ Imagens do sistema; 
-○ Demonstração do fluxo de dados (entrada → processamento → 
+- Link do projeto (se hospedado) ou repositório; 
+- Imagens do sistema; 
+- Demonstração do fluxo de dados (entrada → processamento → 
 insight); 
 
 ### Apresentação
@@ -56,15 +56,17 @@ As equipes deverão realizar uma apresentação de até 8 minutos, abordando:
 ### Tema Escolhido: *Comportamento Financeiro (Financial Behavior Intelligence)*
 
 ● Foco do Produto: 
-○ Análise de hábitos financeiros do usuário; 
+- Análise de hábitos financeiros do usuário; 
 ● Funcionalidades: 
-○ Controle de gastos; 
-○ Cálculo de saldo mensal; 
-○ Variação de despesas; 
-○ Insights sobre saúde financeira; 
+- Controle de gastos; 
+- Cálculo de saldo mensal; 
+- Variação de despesas; 
+- Insights sobre saúde financeira; 
 
 ### Integrantes:
 - Alessandra Mara Nébias
 - Karoline Moraes
 - Luciana Santos Brito
 - Maria Eduarda Carvalho da Silva
+
+## Apresentação da Proposta
