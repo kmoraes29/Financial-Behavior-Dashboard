@@ -7,6 +7,7 @@ import { TransactionsProvider } from "./context/TransactionsContext";
 import { BalancesProvider } from "./context/BalancesContext";
 import { CompaniesProvider } from "./context/EmpresaContext";
 import { PeriodsProvider } from "./context/PeriodsContext";
+import { MetricCards } from "./components/MetricCards";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <CompaniesProvider>
               <Navbar />
               <Overview />
+              <MetricCards />
               <DashboardGraphs />
               <Dashboard />
             </CompaniesProvider>

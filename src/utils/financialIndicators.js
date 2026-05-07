@@ -27,7 +27,14 @@ export function getIndicatorsPeriod({
 
   if (!monthlyBalance || !previousBalance) {
     return null;
-  }
+  };
+
+  const balanceVariation =
+    previousBalance.resultado_mes > 0
+      ? ((monthlyBalance.resultado_mes - previousBalance.resultado_mes) /
+          previousBalance.resultado_mes) *
+        100
+      : null;
 
   const transactionsYearMonth = transactions.map((transaction) => {
     const [year, month] = transaction.data_competencia.split("-");
@@ -72,6 +79,7 @@ export function getIndicatorsPeriod({
         100
       : null;
 
+
   const cashAvailable = monthlyBalance.saldo_final;
 
   return {
@@ -82,5 +90,6 @@ export function getIndicatorsPeriod({
     averageRevenueMonth,
     averageExpenseMonth,
     cashAvailable,
+    balanceVariation
   };
 }

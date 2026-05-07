@@ -8,55 +8,18 @@ import avatarAtencao from "../assets/imagens/avatar-atencao.png";
 import avatarSobPressao from "../assets/imagens/avatar-sobpressao.png";
 import avatarCritico from "../assets/imagens/avatar-critico.png";
 
-import { BsCashCoin, BsSuitDiamondFill } from "react-icons/bs";
+import { BsSuitDiamondFill } from "react-icons/bs";
 import { IoFlameOutline, IoTrendingUp, IoTrendingDown } from "react-icons/io5";
 import {
   FaLocationDot,
-  FaLandmark,
   FaFaceSmile,
   FaFaceMeh,
   FaFaceFrown,
   FaFaceTired,
 } from "react-icons/fa6";
-import { TbChartHistogram } from "react-icons/tb";
 
 import { MdTrendingFlat } from "react-icons/md";
-
-import { useBalances } from "../context/BalancesContext";
-
-const metricCards = [
-  {
-    title: "Saldo Mensal",
-    value: "R$ 72.550",
-    icon: BsCashCoin,
-    color: "#2ED47A",    bg: "#E8FFF2",
-    detail: "↑ 3,1% vs mês passado",
-    detailClass: "text-success",
-  },
-  {
-    title: "Saída de Caixa",
-    value: "R$ 184.250",
-    icon: IoFlameOutline,
-    color: "#FF5A5F",
-    bg: "#FFF0F1",
-    detail: "↑ 12.7% vs mês passado",
-    detailClass: "text-danger",
-  },
-  {
-    title: "Caixa Disponível",
-    value: "R$ 98.120",
-    icon: FaLandmark,
-    color: "#4DA3FF",
-    bg: "#EAF4FF",
-  },
-  {
-    title: "Receita Média Mensal",
-    value: "R$ 256.800",
-    icon: TbChartHistogram,
-    color: "#6C63FF",
-    bg: "#F0EEFF",
-  },
-];
+import { MetricCards } from "./MetricCards";
 
 const emotionalStates = {
   estavel: {
@@ -162,6 +125,7 @@ const Overview = () => {
 
   const emotionalState = emotionalStates.sobpressao;
   const TrendIcon = emotionalState.trendIcon;
+
 
   const dataAtual = new Date().toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -294,45 +258,7 @@ const Overview = () => {
         </div>
 
         {/* Cards de métricas */}
-        <div className="grid grid-cols-1 gap-4 xl:col-span-2">
-          {metricCards.map((card) => {
-            const Icon = card.icon;
-
-            return (
-              <div
-                key={card.title}
-                className="rounded-2xl border border-soft bg-card p-4 shadow-sm"
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className="flex size-12 items-center justify-center rounded-full"
-                    style={{ backgroundColor: card.bg, color: card.color }}
-                  >
-                    <Icon size={22} />
-                  </div>
-
-                  <div className="flex-1">
-                    <p className="text-[11px] font-semibold uppercase text-secondary">
-                      {card.title}
-                    </p>
-
-                    <p className="mt-1 text-lg font-bold text-primary">
-                      {card.value}
-                    </p>
-
-                    {card.detail && (
-                      <p
-                        className={`mt-1 text-xs font-medium ${card.detailClass}`}
-                      >
-                        {card.detail}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <MetricCards />
 
         {/* Estado emocional */}
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
