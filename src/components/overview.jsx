@@ -22,13 +22,14 @@ import { TbChartHistogram } from "react-icons/tb";
 
 import { MdTrendingFlat } from "react-icons/md";
 
+import { useBalances } from "../context/BalancesContext";
+
 const metricCards = [
   {
     title: "Saldo Mensal",
     value: "R$ 72.550",
     icon: BsCashCoin,
-    color: "#2ED47A",
-    bg: "#E8FFF2",
+    color: "#2ED47A",    bg: "#E8FFF2",
     detail: "↑ 3,1% vs mês passado",
     detailClass: "text-success",
   },
