@@ -1,15 +1,14 @@
 import { BsBarChartFill } from "react-icons/bs";
-import './styles/global_styles.css'
+import Navbar from "./components/navbar";
+import Overview from "./components/overview";
 
 function App() {
-
   return (
     <>
-    <BsBarChartFill/>
-    <h1>Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de 
-Insights</h1>
+      <Navbar />
+      <Overview />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
