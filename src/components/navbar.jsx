@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoMenu } from "react-icons/io5";
+import { useCompanies } from "../context/EmpresaContext";
+import { useTransactions } from "../context/TransactionsContext";
+import { getAvailablePeriodsFromTransactions } from "../utils/periods";
+import { usePeriods } from "../context/PeriodsContext";
 
 const Navbar = () => {
   const [active, setActive] = useState("Visão Geral");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const [empresa, setEmpresa] = useState("TechPlus");
+  const { companies, companySelected, loadingCompanies, handleCompanySelected } = useCompanies();
+
   const [periodo, setPeriodo] = useState("Abril/2025");
+  const { transactions, loadingTransaction } = useTransactions();
+  const { periods, periodSelected, handlePeriodSelected } = usePeriods()
+
 
   const menuItems = [
     "Visão Geral",
@@ -56,14 +64,17 @@ const Navbar = () => {
                 Empresa
               </label>
 
-              <select
-                value={empresa}
-                onChange={(e) => setEmpresa(e.target.value)}
-                className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
-              >
-                <option>Pizzaria LTDA</option>
-                <option>TechPlus</option>
-                <option>HackZero</option>
+              <select defaultValue="0" onChange={(event)=>handleCompanySelected(event.target.value)} className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
+              > 
+                <option value="0" disabled>Selecione a Empresa</option>
+                
+                {companies.map((company)=>{ 
+                        return (
+                            <option key={company.id} value={company.id}>
+                            {company.razao_social}
+                            </option>) })
+                }
+              
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
@@ -77,13 +88,16 @@ const Navbar = () => {
               </label>
 
               <select
-                value={periodo}
-                onChange={(e) => setPeriodo(e.target.value)}
+                value={periodSelected}
+                onChange={(e) => handlePeriodSelected(e.target.value)}
                 className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
               >
-                <option>Maio/2025</option>
-                <option>Abril/2025</option>
-                <option>Março/2025</option>
+                {periods.map((period) => (
+                  <option 
+                    key={period.value} value={period.value}>
+                    {period.label}
+                  </option>
+                ))}
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
@@ -117,13 +131,17 @@ const Navbar = () => {
               </label>
 
               <select
-                value={empresa}
-                onChange={(e) => setEmpresa(e.target.value)}
+                defaultValue="0" onChange={(event)=>handleCompanySelected(event.target.value)} 
                 className="h-[52px] w-full appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-sm text-[#1A1D29] outline-none focus:border-[#6C63FF]"
               >
-                <option>Pizzaria LTDA</option>
-                <option>TechPlus</option>
-                <option>HackZero</option>
+                <option value="0" disabled>Selecione a Empresa</option>
+                
+                {companies.map((company)=>{ 
+                        return (
+                            <option key={company.id} value={company.id}>
+                            {company.razao_social}
+                            </option>) })
+                }
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
@@ -137,13 +155,17 @@ const Navbar = () => {
               </label>
 
               <select
-                value={periodo}
-                onChange={(e) => setPeriodo(e.target.value)}
+                defaultValue={periodSelected}
+                onChange={(e) => handlePeriodSelected(e.target.value)}
                 className="h-[52px] w-full appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-sm text-[#1A1D29] outline-none focus:border-[#6C63FF]"
               >
-                <option>Maio/2025</option>
-                <option>Abril/2025</option>
-                <option>Março/2025</option>
+                {periods.map((period) => (
+                  <option 
+                    key={period.value} value={period.value}>
+                    {period.label}
+                  </option>
+                ))}
+                
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">

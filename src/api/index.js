@@ -3,7 +3,7 @@ export * from './accountsApi';
 export * from './balancesApi';
 export * from './categoriesApi';
 export * from './clientsApi';
-export * from './empresaApi';
+export * from './companiesApi';
 export * from './goalsApi';
 export * from './providersApi';
 export * from './transactionsApi';
