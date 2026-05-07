@@ -3,18 +3,31 @@ import { useTransactions } from "../../context/TransactionsContext";
 import { RevenueExpensesBarChart } from "../Charts/RevenueExpensesBarChart/RevenueExpensesBarChart";
 import { useBalances } from "../../context/BalancesContext";
 import { formatRevenueExpensesChartData } from "../../utils/chartData";
+import { getIndicatorsPeriod } from '../../utils/financialIndicators';
+import { usePeriods } from "../../context/PeriodsContext";
+import { useCompanies } from "../../context/EmpresaContext";
 
 export const Dashboard = () => {
-
+    
     const { accounts, loadingAccounts, handleAccountSelected } = useAccounts();
     const { transactions, loadingTransaction } = useTransactions();
-
     const { balances, loadingBalances } = useBalances();
+    const { periodSelected } = usePeriods();
+    const { companySelected } = useCompanies();
+
     const chartData = formatRevenueExpensesChartData(balances);
+
+    const indicators = getIndicatorsPeriod({transactions,balances,periodSelected, companySelectedId: companySelected?.id});
 
     return (
         <div>
-        <h2>Contas Bancárias</h2>
+            {indicators ? 
+            <p>{indicators.averageRevenue}</p>
+            : 
+            <p>nada</p> 
+            }
+
+        {/* <h2>Contas Bancárias</h2>
 
             {
                 loadingAccounts 
@@ -66,7 +79,7 @@ export const Dashboard = () => {
                 <p>Carregando gráfico...</p> 
             : 
                 <RevenueExpensesBarChart balances={chartData} /> 
-            }
+            } */}
         </div>
     );
 };
