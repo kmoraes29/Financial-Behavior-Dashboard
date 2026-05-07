@@ -11,6 +11,7 @@
   --warning: #FFC857;
   --danger: #FF5A5F;
   --medium: #FF8A65;
+  --primary-purple: #6C63FF;
 }
 
 @layer utilities {
@@ -52,6 +53,14 @@
   .bg-card { background-color: #FFFFFF; }
   .bg-hover { background-color: #F1F4FA; }
   .border-soft { border-color: #E6EAF2; }
+
+  .bg-danger-soft {
+  background-color: #FFF0F1;
+}
+
+.bg-success-soft {
+  background-color: #EAFBF3;
+}
 
   .text-primary { color: #1A1D29; }
   .text-secondary { color: #6B7280; }

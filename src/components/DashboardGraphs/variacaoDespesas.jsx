@@ -84,17 +84,27 @@ const VariacaoDespesas = () => {
                 type="monotone"
                 dataKey="saldo"
                 stroke="var(--primary-purple)"
-                strokeWidth={3}
-                dot={{ r: 3 }}
+                strokeWidth={2}
+                dot={{
+                  r: 5,
+                  fill: "var(--primary-purple)",
+                  strokeWidth: 0,
+                }}
+                activeDot={{
+                  r: 6,
+                  fill: "var(--primary-purple)",
+                }}
               />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
 
         <div className="flex w-[120px] flex-col gap-4">
-          <div className="rounded-2xl bg-danger/10 p-4">
+          <div className="rounded-2xl bg-danger-soft p-4">
             <p className="text-xs font-bold text-primary">Despesas</p>
-            <p className="mt-2 text-lg font-bold text-danger">R$ 184.250</p>
+            <p className="whitespace-nowrap text-base font-bold text-danger">
+              R$ 184.250
+            </p>
 
             <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-danger">
               <IoArrowUp />
@@ -104,9 +114,11 @@ const VariacaoDespesas = () => {
             <p className="mt-1 text-[11px] text-secondary">vs Abr/25</p>
           </div>
 
-          <div className="rounded-2xl bg-success/10 p-4">
+          <div className="rounded-2xl bg-success-soft p-4">
             <p className="text-xs font-bold text-primary">Receitas</p>
-            <p className="mt-2 text-lg font-bold text-success">R$ 256.800</p>
+            <p className="whitespace-nowrap text-base font-bold text-success">
+              R$ 256.800
+            </p>
 
             <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-success">
               <IoArrowUp />
