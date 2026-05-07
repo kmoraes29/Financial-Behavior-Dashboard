@@ -5,6 +5,7 @@ const TransactionsContext = createContext(null);
 
 export const TransactionsProvider = ({ children }) => {
     const [transactions, setTransactions] = useState([]);
+    const [loadingTransaction, setLoadingTransaction] = useState(true);
     
 
     useEffect(() => {
@@ -14,13 +15,15 @@ export const TransactionsProvider = ({ children }) => {
                 setTransactions(response);
             } catch (error) {
                 console.error("Erro ao carregar transações:", error);
+            } finally {
+                setLoadingTransaction(false);
             }
         }
         loadTransactions();
     }, []);
 
     return (
-        <TransactionsContext.Provider value={{ transactions, setTransactions }}>
+        <TransactionsContext.Provider value={{ transactions, setTransactions, loadingTransaction }}>
             {children}
         </TransactionsContext.Provider>
     );

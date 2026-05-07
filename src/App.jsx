@@ -9,15 +9,12 @@ import { BalancesProvider } from "./context/BalancesContext";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Overview />
-    </>
-  );
     <AccountsProvider>
       <TransactionsProvider>
         <BalancesProvider>
-
+          
+          <Navbar />
+          <Overview />
           <BsBarChartFill/>
           <Dashboard />
 

@@ -21,12 +21,12 @@ export const Dashboard = () => {
                 ?
                 <p>Carregando contas...</p>
                 :            
-                <select onChange={(event)=>handleAccountSelected(event.target.value)}> 
-                    <option value="0" disabled selected>Selecione a sua conta</option>
+                <select defaultValue="0" onChange={(event)=>handleAccountSelected(event.target.value)}> 
+                    <option value="0" disabled>Selecione a sua conta</option>
 
                     {accounts.map((account)=>{ 
                         return (
-                            <option key={account.id} value={account.instituicao}>
+                            <option key={account.id} value={account.id}>
                             {account.id} | {account.instituicao} | {account.agencia} | {account.conta}
                             </option>) })
                     }
