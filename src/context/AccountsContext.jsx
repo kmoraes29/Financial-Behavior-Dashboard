@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getAccounts } from "../api/client";
+import { getAccounts } from "../api";
 
 const AccountsContext = createContext(null);
 
