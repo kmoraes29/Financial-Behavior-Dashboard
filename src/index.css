@@ -6,6 +6,13 @@
   }
 }
 
+:root {
+  --success: #2ED47A;
+  --warning: #FFC857;
+  --danger: #FF5A5F;
+  --medium: #FF8A65;
+}
+
 @layer utilities {
 
  /* Cores Primarias */
@@ -39,6 +46,7 @@
   .bg-impulsive { background-color: #FB5607; }
   .bg-defensive { background-color: #8338EC; }
 
+
   /* Base da UI */
   .bg-app { background-color: #F7F9FC; }
   .bg-card { background-color: #FFFFFF; }
@@ -48,6 +56,36 @@
   .text-primary { color: #1A1D29; }
   .text-secondary { color: #6B7280; }
   .text-disabled { color: #A0A7B8; }
+
+  .tag-success {
+  background-color: #EAFBF3;
+  border: 1px solid #B7EBCB;
+  color: #2ED47A;
+}
+
+.tag-warning {
+  background-color: #FFF8EA;
+  border: 1px solid #FFE2A3;
+  color: #FFC857;
+}
+
+.tag-danger {
+  background-color: #FFF0F1;
+  border: 1px solid #FFC7CB;
+  color: #FF5A5F;
+}
+
+.tag-medium {
+  background-color: #FFF3F0;
+  border: 1px solid #FFD0C2;
+  color: #FF8A65;
+}
+
+.tag-defensive {
+  background-color: #F3EEFF;
+  border: 1px solid #D9C8FF;
+  color: #7C4DFF;
+}
 
   /* Gradientes */
   .bg-gradient-ai {
