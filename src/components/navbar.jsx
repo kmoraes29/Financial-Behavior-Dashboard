@@ -62,17 +62,22 @@ const Navbar = () => {
                 Empresa
               </label>
 
-              <select defaultValue="0" onChange={(event)=>handleCompanySelected(event.target.value)} className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
-              > 
-                <option value="0" disabled>Selecione a Empresa</option>
-                
-                {companies.map((company)=>{ 
-                        return (
-                            <option key={company.id} value={company.id}>
-                            {company.razao_social}
-                            </option>) })
-                }
-              
+              <select
+                defaultValue="0"
+                onChange={(event) => handleCompanySelected(event.target.value)}
+                className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
+              >
+                <option value="0" disabled>
+                  Selecione a Empresa
+                </option>
+
+                {companies.map((company) => {
+                  return (
+                    <option key={company.id} value={company.id}>
+                      {company.razao_social}
+                    </option>
+                  );
+                })}
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
@@ -91,8 +96,7 @@ const Navbar = () => {
                 className="h-[52px] w-[150px] appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-[11px] text-[#1A1D29] outline-none transition-all hover:bg-[#F7F9FC] focus:border-[#6C63FF]"
               >
                 {periods.map((period) => (
-                  <option 
-                    key={period.value} value={period.value}>
+                  <option key={period.value} value={period.value}>
                     {period.label}
                   </option>
                 ))}
@@ -129,17 +133,21 @@ const Navbar = () => {
               </label>
 
               <select
-                defaultValue="0" onChange={(event)=>handleCompanySelected(event.target.value)} 
+                defaultValue="0"
+                onChange={(event) => handleCompanySelected(event.target.value)}
                 className="h-[52px] w-full appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-sm text-[#1A1D29] outline-none focus:border-[#6C63FF]"
               >
-                <option value="0" disabled>Selecione a Empresa</option>
-                
-                {companies.map((company)=>{ 
-                        return (
-                            <option key={company.id} value={company.id}>
-                            {company.razao_social}
-                            </option>) })
-                }
+                <option value="0" disabled>
+                  Selecione a Empresa
+                </option>
+
+                {companies.map((company) => {
+                  return (
+                    <option key={company.id} value={company.id}>
+                      {company.razao_social}
+                    </option>
+                  );
+                })}
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
@@ -158,12 +166,10 @@ const Navbar = () => {
                 className="h-[52px] w-full appearance-none rounded-2xl border border-[#E6EAF2] bg-white px-4 pt-5 text-sm text-[#1A1D29] outline-none focus:border-[#6C63FF]"
               >
                 {periods.map((period) => (
-                  <option 
-                    key={period.value} value={period.value}>
+                  <option key={period.value} value={period.value}>
                     {period.label}
                   </option>
                 ))}
-                
               </select>
 
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1D29]">
