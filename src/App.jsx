@@ -6,19 +6,25 @@ import { Dashboard } from "./components/Dashboard/Dashboard";
 import { AccountsProvider } from "./context/AccountsContext";
 import { TransactionsProvider } from "./context/TransactionsContext";
 import { BalancesProvider } from "./context/BalancesContext";
+import { CompaniesProvider } from "./context/EmpresaContext";
+import { PeriodsProvider } from "./context/PeriodsContext";
 
 function App() {
   return (
     <AccountsProvider>
       <TransactionsProvider>
-        <BalancesProvider>
-          
-          <Navbar />
-          <Overview />
-          <BsBarChartFill/>
-          <Dashboard />
+        <PeriodsProvider>
+          <BalancesProvider>
+            <CompaniesProvider>
 
-        </BalancesProvider>
+              <Navbar />
+              <Overview />
+              <BsBarChartFill/>
+              <Dashboard />
+            
+            </CompaniesProvider>
+          </BalancesProvider>
+        </PeriodsProvider>
       </TransactionsProvider>
     </AccountsProvider>
   )
