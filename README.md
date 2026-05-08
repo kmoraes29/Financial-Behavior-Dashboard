@@ -17,7 +17,7 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 
 ---
 
-## 📖 Sobre o Projeto:
+## 📖 Sobre o projeto:
 **Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights**  
 
 Este repositório contém o trabalho de conclusão de curso em **Front-End React**, desenvolvido como parte do Hackathon.  
@@ -25,7 +25,7 @@ O objetivo é criar uma aplicação web responsiva e acessível, que demonstre b
 
 ---
 
-## 🎯 Objetivo Geral:
+## 🎯 Objetivo geral:
 Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contemplando:
 
 - Simulação de dados financeiros e de consumo (JSON ou API pública simples);  
@@ -36,7 +36,7 @@ Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contempla
 
 ---
 
-## 🧩 Requisitos Técnicos:
+## 🧩 Requisitos técnicos:
 
 
 ### 🔹 Dados (simulados ou reais):
@@ -58,7 +58,7 @@ Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contempla
 
 ---
 
-## 🛠 Tecnologias Utilizadas:
+## 🛠 Tecnologias utilizadas:
 - [React](https://reactjs.org/)  
 - [JavaScript (ES6+)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)  
 - [HTML5](https://developer.mozilla.org/pt-BR/docs/Web/HTML)  
