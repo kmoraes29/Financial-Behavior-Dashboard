@@ -50,7 +50,30 @@ export function getExpensesAnalytics({
     }
     ,{});
 
+
+    const totalExpensesMonth = Object.values(expensesByCategoriesMonth).reduce((acc,value)=>{
+        return acc + value;
+    },0);
+
+    const expensesByCategoriesPreviousMonthObject = Object.entries(expensesByCategoriesPreviousMonth).map((expense) =>{
+        return {
+            "categoria": expense[0],
+            "valor": expense[1],
+        }
+    });
+
+    const resumeByCategoria = Object.entries(expensesByCategoriesMonth).map((expense)=>{
+        
+        const expensePreviousMonth = expensesByCategoriesPreviousMonthObject.find((valor) => valor.categoria === expense[0]);
+
+        return {
+            "categoria": expense[0],
+            "valor": expense[1],
+            "percentual": expense[1] / totalExpensesMonth * 100,
+            "variacao": (expensePreviousMonth && expensePreviousMonth.valor > 0) ? ((expense[1] - expensePreviousMonth.valor) / expensePreviousMonth.valor * 100): 100,
+        };
+    });
     
-    return { categories, expensesByCategoriesMonth, expensesByCategoriesPreviousMonth, };
+    return { categories, expensesByCategoriesMonth, expensesByCategoriesPreviousMonth, resumeByCategoria };
 
 };
