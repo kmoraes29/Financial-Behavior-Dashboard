@@ -62,7 +62,7 @@ export function getExpensesAnalytics({
         }
     });
 
-    const resumeByCategoria = Object.entries(expensesByCategoriesMonth).map((expense)=>{
+    const resumeByCategories = Object.entries(expensesByCategoriesMonth).map((expense)=>{
         
         const expensePreviousMonth = expensesByCategoriesPreviousMonthObject.find((valor) => valor.categoria === expense[0]);
 
@@ -74,6 +74,6 @@ export function getExpensesAnalytics({
         };
     });
     
-    return { categories, expensesByCategoriesMonth, expensesByCategoriesPreviousMonth, resumeByCategoria };
+    return { categories, expensesByCategoriesMonth, expensesByCategoriesPreviousMonth, resumeByCategories };
 
 };
