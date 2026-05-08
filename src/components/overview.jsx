@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import GaugeComponent from "react-gauge-component";
 
+import { useTransactions } from "../context/TransactionsContext";
+import { usePeriods } from "../context/PeriodsContext";
+
 import caminho from "../assets/imagens/caminho.png";
 import avatarEstavel from "../assets/imagens/avatar-estavel.png";
 import avatarAtencao from "../assets/imagens/avatar-atencao.png";
@@ -120,12 +123,14 @@ const emotionalFactors = [
 ];
 
 const Overview = () => {
+  const { transactions, loadingTransaction } = useTransactions();
+  const { periodSelected } = usePeriods();
+
   const [diasAnimados, setDiasAnimados] = useState(0);
   const diasAtuais = 32;
 
   const emotionalState = emotionalStates.sobpressao;
   const TrendIcon = emotionalState.trendIcon;
-
 
   const dataAtual = new Date().toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -150,6 +155,54 @@ const Overview = () => {
 
     return () => clearInterval(counter);
   }, []);
+
+  const transacoesDoPeriodo = transactions.filter((transaction) => {
+    return transaction.data_competencia?.startsWith(periodSelected);
+  });
+
+  const receitasDoPeriodo = transacoesDoPeriodo
+    .filter((transaction) => transaction.tipo === "receita")
+    .reduce((total, transaction) => total + Number(transaction.valor), 0);
+
+  const despesasDoPeriodo = transacoesDoPeriodo
+    .filter((transaction) => transaction.tipo === "despesa")
+    .reduce((total, transaction) => total + Number(transaction.valor), 0);
+
+  const saldoMensal = receitasDoPeriodo - despesasDoPeriodo;
+
+  const caixaDisponivel = transactions.reduce((total, transaction) => {
+    if (transaction.tipo === "receita") {
+      return total + Number(transaction.valor);
+    }
+
+    if (transaction.tipo === "despesa") {
+      return total - Number(transaction.valor);
+    }
+
+    return total;
+  }, 0);
+
+  const mesesComReceita = new Set(
+    transactions
+      .filter((transaction) => transaction.tipo === "receita")
+      .map((transaction) => transaction.data_competencia?.slice(0, 7)),
+  ).size;
+
+  const receitaMediaMensal =
+    mesesComReceita > 0 ? receitasDoPeriodo / mesesComReceita : 0;
+
+  const formatCurrency = (value) =>
+    value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+  const metrics = {
+    saldoMensal: formatCurrency(saldoMensal),
+    saidaCaixa: formatCurrency(despesasDoPeriodo),
+    caixaDisponivel: formatCurrency(caixaDisponivel),
+    receitaMediaMensal: formatCurrency(receitaMediaMensal),
+  };
 
   return (
     <section className="p-6">
@@ -258,7 +311,7 @@ const Overview = () => {
         </div>
 
         {/* Cards de métricas */}
-        <MetricCards />
+        <MetricCards metrics={metrics} loading={loadingTransaction} />
 
         {/* Estado emocional */}
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
