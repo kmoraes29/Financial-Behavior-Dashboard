@@ -386,7 +386,7 @@ const Overview = () => {
 
     ${
       diasAtuais >= 75
-        ? "right-0"
+        ? "left-0"
         : diasAtuais <= 20
           ? "right-0"
           : "left-1/2 -translate-x-1/2"
