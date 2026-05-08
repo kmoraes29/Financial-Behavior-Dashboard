@@ -8,112 +8,12 @@ import {
 } from "react-icons/fa";
 import { IoArrowForward, IoArrowUp, IoArrowDown } from "react-icons/io5";
 
-const categories = [
-  {
-    icon: FaMoneyBillWave,
-    iconClass: "text-success",
-    title: "Folha de Pagamento",
-    amount: "R$ 78.500",
-    percentage: "42%",
-    variation: "5,3%",
-    variationClass: "text-danger",
-    lineColor: "var(--danger)",
-    tag: "Estratégico",
-    tagClass: "tag-success",
-    sparkline: [
-      { value: 10 },
-      { value: 18 },
-      { value: 12 },
-      { value: 20 },
-      { value: 15 },
-      { value: 22 },
-    ],
-  },
-  {
-    icon: FaBullhorn,
-    iconClass: "text-medium",
-    title: "Marketing e Vendas",
-    amount: "R$ 25.600",
-    percentage: "14%",
-    variation: "12,1%",
-    variationClass: "text-danger",
-    lineColor: "var(--medium)",
-    tag: "Impulsivo",
-    tagClass: "tag-medium",
-    sparkline: [
-      { value: 12 },
-      { value: 9 },
-      { value: 15 },
-      { value: 11 },
-      { value: 18 },
-      { value: 13 },
-    ],
-  },
-  {
-    icon: FaLaptopCode,
-    iconClass: "text-primary-purple",
-    title: "Assinaturas e Softwares",
-    amount: "R$ 12.300",
-    percentage: "7%",
-    variation: "27,3%",
-    variationClass: "text-danger",
-    lineColor: "var(--warning)",
-    tag: "Reativo",
-    tagClass: "tag-warning",
-    sparkline: [
-      { value: 8 },
-      { value: 12 },
-      { value: 10 },
-      { value: 14 },
-      { value: 13 },
-      { value: 17 },
-    ],
-  },
-  {
-    icon: FaBuilding,
-    iconClass: "text-primary-blue",
-    title: "Operacional",
-    amount: "R$ 18.750",
-    percentage: "10%",
-    variation: "2,1%",
-    variationClass: "text-success",
-    lineColor: "var(--success)",
-    tag: "Estratégico",
-    tagClass: "tag-success",
-    sparkline: [
-      { value: 16 },
-      { value: 12 },
-      { value: 15 },
-      { value: 11 },
-      { value: 14 },
-      { value: 10 },
-    ],
-  },
-  {
-    icon: FaEllipsisH,
-    iconClass: "text-secondary",
-    title: "Outros",
-    amount: "R$ 48.600",
-    percentage: "27%",
-    variation: "8,7%",
-    variationClass: "text-danger",
-    lineColor: "var(--danger)",
-    tag: "Defensivo",
-    tagClass: "tag-defensive",
-    sparkline: [
-      { value: 14 },
-      { value: 18 },
-      { value: 12 },
-      { value: 16 },
-      { value: 13 },
-      { value: 15 },
-    ],
-  },
-];
+import { useTransactions } from "../../context/TransactionsContext";
+import { usePeriods } from "../../context/PeriodsContext";
+import { useCompanies } from "../../context/EmpresaContext";
+import { formatCurrency } from "../../utils/currency";
 
 const Sparkline = ({ data, color }) => {
-
-  
   return (
     <div className="h-7 w-20">
       <ResponsiveContainer width="100%" height="100%">
@@ -131,7 +31,197 @@ const Sparkline = ({ data, color }) => {
   );
 };
 
+const categoryGroups = {
+  folha_pagamento: ["folha_pagamento"],
+  marketing: ["marketing"],
+  softwares: ["sistemas"],
+  operacional: ["aluguel", "energia", "agua", "gas", "manutencao"],
+  outros: [
+    "insumos",
+    "embalagens",
+    "freelancers",
+    "impostos",
+    "taxas_cartao_delivery",
+  ],
+};
+
+const categoryConfig = {
+  folha_pagamento: {
+    title: "Folha de Pagamento",
+    icon: FaMoneyBillWave,
+    iconClass: "text-success",
+    lineColor: "var(--danger)",
+  },
+  marketing: {
+    title: "Marketing e Vendas",
+    icon: FaBullhorn,
+    iconClass: "text-medium",
+    lineColor: "var(--medium)",
+  },
+  softwares: {
+    title: "Assinaturas e Softwares",
+    icon: FaLaptopCode,
+    iconClass: "text-primary-purple",
+    lineColor: "var(--warning)",
+  },
+  operacional: {
+    title: "Operacional",
+    icon: FaBuilding,
+    iconClass: "text-primary-blue",
+    lineColor: "var(--success)",
+  },
+  outros: {
+    title: "Outros",
+    icon: FaEllipsisH,
+    iconClass: "text-secondary",
+    lineColor: "var(--danger)",
+  },
+};
+
+const getPreviousMonth = (period) => {
+  if (!period) return "";
+
+  const [year, month] = period.split("-").map(Number);
+  const date = new Date(year, month - 2, 1);
+
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0",
+  )}`;
+};
+
+const getVariation = (current, previous) => {
+  if (!previous || previous === 0) return 0;
+  return ((current - previous) / previous) * 100;
+};
+
+const getBehaviorTag = (variation) => {
+  if (variation > 20) {
+    return {
+      tag: "Impulsivo",
+      tagClass: "tag-medium",
+    };
+  }
+
+  if (variation > 8) {
+    return {
+      tag: "Reativo",
+      tagClass: "tag-warning",
+    };
+  }
+
+  if (variation < 0) {
+    return {
+      tag: "Estratégico",
+      tagClass: "tag-success",
+    };
+  }
+
+  return {
+    tag: "Estratégico",
+    tagClass: "tag-success",
+  };
+};
+
 const ControleDeGastos = () => {
+  const { transactions } = useTransactions();
+  const { periods, periodSelected } = usePeriods();
+  const { companySelected } = useCompanies();
+
+  const companyId = companySelected?.id;
+
+  const currentPeriod =
+    periodSelected ||
+    periods?.[0]?.value ||
+    transactions[0]?.data_competencia?.slice(0, 7);
+
+  const hasCompanySelected = Boolean(companyId);
+
+  const previousPeriod = getPreviousMonth(currentPeriod);
+
+  const transactionsFiltered = transactions.filter((transaction) => {
+    return (
+      String(transaction.empresaId) === String(companyId) &&
+      transaction.data_competencia?.startsWith(currentPeriod) &&
+      transaction.tipo === "despesa"
+    );
+  });
+
+  const totalExpenses = transactionsFiltered.reduce(
+    (acc, transaction) => acc + Number(transaction.valor || 0),
+    0,
+  );
+
+  const periodsForSparkline =
+    periods?.length > 0
+      ? periods.slice(0, 5).reverse()
+      : [{ value: currentPeriod }];
+
+  const categories = Object.entries(categoryConfig).map(([key, config]) => {
+    const groupCategories = categoryGroups[key] || [key];
+
+    const currentTransactions = transactions.filter((transaction) => {
+      return (
+        String(transaction.empresaId) === String(companyId) &&
+        transaction.tipo === "despesa" &&
+        transaction.data_competencia?.startsWith(currentPeriod) &&
+        groupCategories.includes(transaction.categoria)
+      );
+    });
+
+    const previousTransactions = transactions.filter((transaction) => {
+      return (
+        String(transaction.empresaId) === String(companyId) &&
+        transaction.tipo === "despesa" &&
+        transaction.data_competencia?.startsWith(previousPeriod) &&
+        groupCategories.includes(transaction.categoria)
+      );
+    });
+
+    const total = currentTransactions.reduce(
+      (acc, transaction) => acc + Number(transaction.valor || 0),
+      0,
+    );
+
+    const previousTotal = previousTransactions.reduce(
+      (acc, transaction) => acc + Number(transaction.valor || 0),
+      0,
+    );
+
+    const percentage =
+      totalExpenses > 0 ? ((total / totalExpenses) * 100).toFixed(0) : 0;
+
+    const variation = getVariation(total, previousTotal);
+
+    const sparkline = periodsForSparkline.map((period) => {
+      const monthTotal = transactions
+        .filter((transaction) => {
+          return (
+            String(transaction.empresaId) === String(companyId) &&
+            transaction.tipo === "despesa" &&
+            transaction.data_competencia?.startsWith(period.value) &&
+            groupCategories.includes(transaction.categoria)
+          );
+        })
+        .reduce((acc, transaction) => acc + Number(transaction.valor || 0), 0);
+
+      return { value: monthTotal };
+    });
+
+    const behavior = getBehaviorTag(variation);
+
+    return {
+      ...config,
+      amount: formatCurrency(total),
+      percentage: `${percentage}%`,
+      variation: `${Math.abs(variation).toFixed(1)}%`,
+      variationClass: variation >= 0 ? "text-danger" : "text-success",
+      tag: behavior.tag,
+      tagClass: behavior.tagClass,
+      sparkline,
+    };
+  });
+
   return (
     <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-5">
       <div className="flex items-center justify-between">
