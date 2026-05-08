@@ -196,7 +196,7 @@ const Overview = () => {
     md:absolute
     md:right-8
     md:top-[-20px]
-    md:mt-0
+    md:mt-14
     md:h-auto
     md:w-[75%]
 
