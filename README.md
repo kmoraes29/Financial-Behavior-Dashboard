@@ -26,7 +26,7 @@ O objetivo é criar uma aplicação web responsiva e acessível, que demonstre b
 ---
 
 ## 🎯 Objetivo Geral:
-Cada equipe deverá desenvolver uma aplicação web utilizando **React** e **JavaScript**, contemplando:
+Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contemplando:
 
 - Simulação de dados financeiros e de consumo (JSON ou API pública simples);  
 - Processamento de dados utilizando lógica em JavaScript;  
@@ -37,7 +37,7 @@ Cada equipe deverá desenvolver uma aplicação web utilizando **React** e **Jav
 ---
 
 ## 🧩 Requisitos Técnicos:
-Cada equipe precisa aplicar TODOS os módulos da formação com os seguintes conceitos:
+
 
 ### 🔹 Dados (simulados ou reais):
 - Uso de JSON local ou API pública (ex: dados financeiros simples);  
