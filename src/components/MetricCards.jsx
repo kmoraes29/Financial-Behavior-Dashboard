@@ -26,18 +26,21 @@ const getVariationLabel = (value) => {
   return `${value.toFixed(1)}% vs mês passado`;
 };
 
-export const MetricCards = () => {
+export const MetricCards = ({ indicators: indicatorsProp }) => {
   const { transactions } = useTransactions();
   const { balances } = useBalances();
   const { periodSelected } = usePeriods();
   const { companySelected } = useCompanies();
+  const companySelectedId = companySelected?.id || null;
 
-  const indicators = getIndicatorsPeriod({
-    transactions,
-    balances,
-    periodSelected,
-    companySelectedId: companySelected?.id,
-  });
+  const indicators =
+    indicatorsProp ||
+    getIndicatorsPeriod({
+      transactions,
+      balances,
+      periodSelected,
+      companySelectedId,
+    });
 
   const metricCardsArray = [
     {

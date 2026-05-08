@@ -9,6 +9,7 @@ import { CompaniesProvider } from "./context/EmpresaContext";
 import { PeriodsProvider } from "./context/PeriodsContext";
 import { ClientsProvider } from "./context/ClientContext";
 
+
 function App() {
   return (
     <AccountsProvider>

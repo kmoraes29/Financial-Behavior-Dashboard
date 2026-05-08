@@ -12,6 +12,7 @@ import { useTransactions } from "../../context/TransactionsContext";
 import { usePeriods } from "../../context/PeriodsContext";
 import { useCompanies } from "../../context/EmpresaContext";
 import { formatCurrency } from "../../utils/currency";
+import { getExpensesAnalytics } from "../../utils/expensesAnalytics";
 
 const Sparkline = ({ data, color }) => {
   return (
@@ -78,18 +79,6 @@ const categoryConfig = {
   },
 };
 
-const getPreviousMonth = (period) => {
-  if (!period) return "";
-
-  const [year, month] = period.split("-").map(Number);
-  const date = new Date(year, month - 2, 1);
-
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-    2,
-    "0",
-  )}`;
-};
-
 const getVariation = (current, previous) => {
   if (!previous || previous === 0) return 0;
   return ((current - previous) / previous) * 100;
@@ -127,30 +116,26 @@ const ControleDeGastos = () => {
   const { transactions } = useTransactions();
   const { periods, periodSelected } = usePeriods();
   const { companySelected } = useCompanies();
-
-  const companyId = companySelected?.id;
-
+  const companySelectedId = companySelected?.id;
+  
   const currentPeriod =
     periodSelected ||
     periods?.[0]?.value ||
     transactions[0]?.data_competencia?.slice(0, 7);
 
-  const hasCompanySelected = Boolean(companyId);
-
-  const previousPeriod = getPreviousMonth(currentPeriod);
-
-  const transactionsFiltered = transactions.filter((transaction) => {
-    return (
-      String(transaction.empresaId) === String(companyId) &&
-      transaction.data_competencia?.startsWith(currentPeriod) &&
-      transaction.tipo === "despesa"
-    );
+  const expensesAnalytics = getExpensesAnalytics({
+    transactions,
+    periodSelected,
+    companySelectedId,
   });
 
-  const totalExpenses = transactionsFiltered.reduce(
-    (acc, transaction) => acc + Number(transaction.valor || 0),
-    0,
-  );
+  const expensesByCategoriesMonth = expensesAnalytics?.expensesByCategoriesMonth || {};
+  const expensesByCategoriesPreviousMonth =
+    expensesAnalytics?.expensesByCategoriesPreviousMonth || {};
+  const resumeByCategories = expensesAnalytics?.resumeByCategories || [];
+  const totalExpenses = resumeByCategories.reduce((acc, category) => {
+    return acc + Number(category.valor || 0);
+  }, 0);
 
   const periodsForSparkline =
     periods?.length > 0
@@ -160,33 +145,13 @@ const ControleDeGastos = () => {
   const categories = Object.entries(categoryConfig).map(([key, config]) => {
     const groupCategories = categoryGroups[key] || [key];
 
-    const currentTransactions = transactions.filter((transaction) => {
-      return (
-        String(transaction.empresaId) === String(companyId) &&
-        transaction.tipo === "despesa" &&
-        transaction.data_competencia?.startsWith(currentPeriod) &&
-        groupCategories.includes(transaction.categoria)
-      );
-    });
+    const total = groupCategories.reduce((acc, category) => {
+      return acc + Number(expensesByCategoriesMonth[category] || 0);
+    }, 0);
 
-    const previousTransactions = transactions.filter((transaction) => {
-      return (
-        String(transaction.empresaId) === String(companyId) &&
-        transaction.tipo === "despesa" &&
-        transaction.data_competencia?.startsWith(previousPeriod) &&
-        groupCategories.includes(transaction.categoria)
-      );
-    });
-
-    const total = currentTransactions.reduce(
-      (acc, transaction) => acc + Number(transaction.valor || 0),
-      0,
-    );
-
-    const previousTotal = previousTransactions.reduce(
-      (acc, transaction) => acc + Number(transaction.valor || 0),
-      0,
-    );
+    const previousTotal = groupCategories.reduce((acc, category) => {
+      return acc + Number(expensesByCategoriesPreviousMonth[category] || 0);
+    }, 0);
 
     const percentage =
       totalExpenses > 0 ? ((total / totalExpenses) * 100).toFixed(0) : 0;
@@ -196,10 +161,12 @@ const ControleDeGastos = () => {
     const sparkline = periodsForSparkline.map((period) => {
       const monthTotal = transactions
         .filter((transaction) => {
+          const sparklinePeriod = period.value || period;
+
           return (
-            String(transaction.empresaId) === String(companyId) &&
+            String(transaction.empresaId) === String(companySelectedId) &&
             transaction.tipo === "despesa" &&
-            transaction.data_competencia?.startsWith(period.value) &&
+            transaction.data_competencia?.startsWith(sparklinePeriod) &&
             groupCategories.includes(transaction.categoria)
           );
         })

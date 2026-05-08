@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import GaugeComponent from "react-gauge-component";
 
-import { useTransactions } from "../context/TransactionsContext";
-import { usePeriods } from "../context/PeriodsContext";
-
 import caminho from "../assets/imagens/caminho.png";
 import avatarEstavel from "../assets/imagens/avatar-estavel.png";
 import avatarAtencao from "../assets/imagens/avatar-atencao.png";
@@ -122,13 +119,21 @@ const emotionalFactors = [
   "Poucas ações estratégicas nos últimos 60 dias",
 ];
 
-const Overview = () => {
-  const { transactions, loadingTransaction } = useTransactions();
-  const { periodSelected } = usePeriods();
+const getHorizonStatus = (days) => {
+  if (days >= 60) {
+    return { label: "Zona Segura", className: "text-success" };
+  }
 
+  if (days >= 30) {
+    return { label: "Zona de Atenção", className: "text-warning" };
+  }
+
+  return { label: "Zona Crítica", className: "text-danger" };
+};
+
+const Overview = () => {
   const [diasAnimados, setDiasAnimados] = useState(0);
   const diasAtuais = 32;
-
   const emotionalState = emotionalStates.sobpressao;
   const TrendIcon = emotionalState.trendIcon;
 
@@ -141,6 +146,12 @@ const Overview = () => {
   useEffect(() => {
     let start = 0;
     const end = diasAtuais;
+
+    if (end <= 0) {
+      setDiasAnimados(0);
+      return undefined;
+    }
+
     const duration = 1600;
     const incrementTime = duration / end;
 
@@ -155,54 +166,6 @@ const Overview = () => {
 
     return () => clearInterval(counter);
   }, []);
-
-  const transacoesDoPeriodo = transactions.filter((transaction) => {
-    return transaction.data_competencia?.startsWith(periodSelected);
-  });
-
-  const receitasDoPeriodo = transacoesDoPeriodo
-    .filter((transaction) => transaction.tipo === "receita")
-    .reduce((total, transaction) => total + Number(transaction.valor), 0);
-
-  const despesasDoPeriodo = transacoesDoPeriodo
-    .filter((transaction) => transaction.tipo === "despesa")
-    .reduce((total, transaction) => total + Number(transaction.valor), 0);
-
-  const saldoMensal = receitasDoPeriodo - despesasDoPeriodo;
-
-  const caixaDisponivel = transactions.reduce((total, transaction) => {
-    if (transaction.tipo === "receita") {
-      return total + Number(transaction.valor);
-    }
-
-    if (transaction.tipo === "despesa") {
-      return total - Number(transaction.valor);
-    }
-
-    return total;
-  }, 0);
-
-  const mesesComReceita = new Set(
-    transactions
-      .filter((transaction) => transaction.tipo === "receita")
-      .map((transaction) => transaction.data_competencia?.slice(0, 7)),
-  ).size;
-
-  const receitaMediaMensal =
-    mesesComReceita > 0 ? receitasDoPeriodo / mesesComReceita : 0;
-
-  const formatCurrency = (value) =>
-    value.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-
-  const metrics = {
-    saldoMensal: formatCurrency(saldoMensal),
-    saidaCaixa: formatCurrency(despesasDoPeriodo),
-    caixaDisponivel: formatCurrency(caixaDisponivel),
-    receitaMediaMensal: formatCurrency(receitaMediaMensal),
-  };
 
   return (
     <section className="p-6">
@@ -230,7 +193,10 @@ const Overview = () => {
               </div>
             </div>
 
-            <div className="mt-5 inline-flex items-center gap-1 rounded-full bg-[#FFF4D6] px-3 py-2 text-xs font-semibold text-warning">
+            <div
+              className="mt-5 inline-flex items-center gap-1 rounded-full bg-[#FFF4D6] px-3 py-2 text-xs font-semibold text-warning"
+              title="Zona de Atenção"
+            >
               <BsSuitDiamondFill /> Zona de Atenção
             </div>
           </div>
@@ -284,7 +250,7 @@ const Overview = () => {
                   <p className="text-sm font-semibold text-primary">Hoje</p>
 
                   <p className="mb-[-6px] mt-1 text-lg font-bold text-primary">
-                    32 dias
+                    {diasAtuais} dias
                   </p>
 
                   <p className="text-xs text-secondary">restantes</p>
@@ -311,7 +277,7 @@ const Overview = () => {
         </div>
 
         {/* Cards de métricas */}
-        <MetricCards metrics={metrics} loading={loadingTransaction} />
+        <MetricCards />
 
         {/* Estado emocional */}
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
