@@ -1,72 +1,94 @@
-# PROJETO DE CONCLUSÃO DE CURSO
-## *Hackathon FrontEnd com REACT*
+# Hackathon Front-End - Artemisia Elas+ Tech 🚀
 
-***Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights.***
+Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, com foco em soluções de impacto social utilizando **React** no Front-End.
 
-O projeto tem como objetivo desenvolver uma aplicação frontend que simula o comportamento de plataformas modernas, integrando dados de consumo e finanças para apoiar decisões. 
+---
 
-### Requisitos do Projeto
-Desenvolver uma aplicação web utilizando React e JavaScript, contemplando:
-- Simulação de dados financeiros e de consumo (JSON ou API pública 
-simples); 
-- Processamento de dados utilizando lógica em JavaScript; 
-- Geração de insights automáticos; 
-- Interface frontend interativa e responsiva; 
-- Aplicação de boas práticas ágeis (backlog e user stories);
+## 📑 Sumário:
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Objetivo Geral](#objetivo-geral)
+- [Requisitos Técnicos](#requisitos-técnicos)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Instalação](#instalação)
+- [Como Usar](#como-usar)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
-#### Requisitos Técnicos
-Cada equipe precisa aplicar TODOS os módulos da formação com os seguintes conceitos: 
-● Dados (simulados ou reais) 
-- Uso de JSON local ou API pública (ex: dados financeiros simples); 
-- Estruturação de dados coerente; 
-- Documentação da origem ou simulação; 
-● Lógica em JavaScript 
-- Cálculos financeiros (saldo, variação, média); 
-- Processamento de dados 
-- Geração de insights automáticos 
-- Detecção de padrões de comportamento; 
-● Frontend (React + HTML/CSS) 
-- Interface funcional e responsiva; 
-- Componentização; 
-- Consumo de dados (local ou API); 
-- Visualização clara dos insights (cards, listas, gráficos); 
+---
 
-### Entregável Final:
-Cada equipe deverá entregar um documento (PDF ou DOC) contendo: 
-● Objetivo do projeto; 
-● Arquitetura da solução;
+## 📖 Sobre o projeto:
+**Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights**.  
 
-#### Evidências técnicas:
-● Prints do código (lógica JavaScript); 
-● Estrutura dos dados (JSON ou API); 
-● Prints da aplicação React; 
-● Interface: 
-- Link do projeto (se hospedado) ou repositório; 
-- Imagens do sistema; 
-- Demonstração do fluxo de dados (entrada → processamento → 
-insight); 
+Este repositório contém o trabalho de conclusão de curso em **Front-End React**, desenvolvido como parte do Hackathon.  
+O objetivo é criar uma aplicação web responsiva e acessível, que demonstre boas práticas de desenvolvimento e design de interfaces, simulando o comportamento de plataformas modernas que integram dados de consumo e finanças para apoiar decisões.
 
-### Apresentação
-As equipes deverão realizar uma apresentação de até 8 minutos, abordando: 
-● Problema resolvido 
-● Solução proposta 
-● Demonstração do sistema 
-● Lógica aplicada
+---
 
-### Tema Escolhido: *Comportamento Financeiro (Financial Behavior Intelligence)*
+## 🎯 Objetivo geral:
+Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contemplando:
 
-● Foco do Produto: 
-- Análise de hábitos financeiros do usuário; 
-● Funcionalidades: 
-- Controle de gastos; 
-- Cálculo de saldo mensal; 
-- Variação de despesas; 
-- Insights sobre saúde financeira; 
+- Simulação de dados financeiros e de consumo (JSON ou API pública simples);  
+- Processamento de dados utilizando lógica em JavaScript;  
+- Geração de insights automáticos;  
+- Interface frontend interativa e responsiva;  
+- Aplicação de boas práticas ágeis (backlog e user stories).  
 
-### Integrantes:
-- Alessandra Mara Nébias
-- Karoline Moraes
-- Luciana Santos Brito
-- Maria Eduarda Carvalho da Silva
+---
 
-## Apresentação da Proposta
+## 🧩 Requisitos técnicos:
+
+
+### 🔹 Dados (simulados ou reais):
+- Uso de JSON local ou API pública (ex: dados financeiros simples);  
+- Estruturação de dados coerente;  
+- Documentação da origem ou simulação.  
+
+### 🔹 Lógica em JavaScript:
+- Cálculos financeiros (saldo, variação, média);  
+- Processamento de dados;  
+- Geração de insights automáticos;  
+- Detecção de padrões de comportamento.  
+
+### 🔹 Frontend (React + HTML/CSS):
+- Interface funcional e responsiva;  
+- Componentização;  
+- Consumo de dados (local ou API);  
+- Visualização clara dos insights (cards, listas, gráficos).  
+
+---
+
+## 🛠 Tecnologias utilizadas:
+- [React](https://reactjs.org/)  
+- [JavaScript (ES6+)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)  
+- [HTML5](https://developer.mozilla.org/pt-BR/docs/Web/HTML)  
+- [CSS3](https://developer.mozilla.org/pt-BR/docs/Web/CSS)  
+- [Node.js](https://nodejs.org/)  
+- [Git](https://git-scm.com/)  
+
+---
+
+## ⚙️ Instalação:
+Clone o repositório e instale as dependências:
+
+```bash
+git clone https://github.com/anebias/HackathonFrontEnd.git
+cd HackathonFrontEnd
+npm install
+
+npm start
+
+HackathonFrontEnd/
+├── public/          # Arquivos públicos e index.html
+├── src/             # Código fonte principal
+│   ├── components/  # Componentes reutilizáveis
+│   ├── pages/       # Páginas da aplicação
+│   ├── assets/      # Imagens, ícones e estilos
+│   └── App.js       # Componente raiz
+├── package.json     # Configuração do projeto
+└── README.md        # Documentação
+
+
+---
+
+Este projeto foi desenvolvido exclusivamente para fins educacionais e não está vinculado a nenhuma licença específica.

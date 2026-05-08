@@ -5,20 +5,14 @@ import { useCompanies } from "../context/EmpresaContext";
 import { useTransactions } from "../context/TransactionsContext";
 import { getAvailablePeriodsFromTransactions } from "../utils/periods";
 import { usePeriods } from "../context/PeriodsContext";
+import { getIndicatorsPeriod } from "../utils/financialIndicators";
 
 const Navbar = () => {
   const [active, setActive] = useState("Visão Geral");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const {
-    companies,
-    companySelected,
-    loadingCompanies,
-    handleCompanySelected,
-  } = useCompanies();
+  const { companies, companySelected, handleCompanySelected } = useCompanies();
 
-  const [periodo, setPeriodo] = useState("Abril/2025");
-  const { transactions, loadingTransaction } = useTransactions();
   const { periods, periodSelected, handlePeriodSelected } = usePeriods();
 
   const menuItems = [
