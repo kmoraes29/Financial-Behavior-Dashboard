@@ -112,6 +112,8 @@ const categories = [
 ];
 
 const Sparkline = ({ data, color }) => {
+
+  
   return (
     <div className="h-7 w-20">
       <ResponsiveContainer width="100%" height="100%">

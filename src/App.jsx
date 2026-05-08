@@ -16,11 +16,11 @@ function App() {
         <PeriodsProvider>
           <BalancesProvider>
             <CompaniesProvider>
+
               <Navbar />
               <Overview />
-              <MetricCards />
               <DashboardGraphs />
-              <Dashboard />
+
             </CompaniesProvider>
           </BalancesProvider>
         </PeriodsProvider>
