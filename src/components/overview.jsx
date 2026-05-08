@@ -420,7 +420,7 @@ const Overview = () => {
 
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
           <h2 className="text-sm font-bold uppercase text-primary">
-            Estado Emocional da Empresa
+            Estado Operacional
           </h2>
 
           <div className="mt-5 flex items-start justify-between gap-4">
@@ -441,7 +441,9 @@ const Overview = () => {
                 <div
                   className={`flex items-center gap-1 font-semibold ${emotionalState.color}`}
                 >
-                  <span>{companySelected?.id ? emotionalState.trend : "--"}</span>
+                  <span>
+                    {companySelected?.id ? emotionalState.trend : "--"}
+                  </span>
                   <TrendIcon className="text-base" />
                 </div>
               </div>

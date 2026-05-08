@@ -5,8 +5,16 @@ import {
   IoPersonRemoveOutline,
   IoTrendingDown,
   IoArrowUp,
+  IoWarningOutline,
 } from "react-icons/io5";
 import { TfiArrowRight } from "react-icons/tfi";
+import { MdKeyboardArrowDown } from "react-icons/md";
+
+import { useTransactions } from "../../context/TransactionsContext";
+import { useBalances } from "../../context/BalancesContext";
+import { usePeriods } from "../../context/PeriodsContext";
+import { useCompanies } from "../../context/EmpresaContext";
+import { getIndicatorsPeriod } from "../../utils/financialIndicators";
 
 import caminho from "../../assets/imagens/caminho.png";
 import caminhoCritico from "../../assets/imagens/caminho-critico.png";
@@ -19,20 +27,30 @@ const scenarios = [
     icon: IoPersonRemoveOutline,
   },
   {
-    id: "delivery_drop",
-    label: "Reduzir delivery em 20%",
+    id: "moderate_drop",
+    label: "Queda de 20% no delivery",
     icon: IoTrendingDown,
+  },
+  {
+    id: "close_store",
+    label: "Fechar 01 loja",
+    icon: IoPersonRemoveOutline,
   },
   {
     id: "cost_increase",
     label: "Aumentar custos em 15%",
     icon: IoArrowUp,
   },
+  {
+    id: "bankruptcy_risk",
+    label: "Colapso operacional",
+    icon: IoWarningOutline,
+  },
 ];
 
 const getMarkerPosition = (days) => {
   const safeDays = Math.max(0, Math.min(days, 90));
-  const position = 100 - (safeDays / 90) * 100;
+  const position = (safeDays / 90) * 100;
 
   return `${position}%`;
 };
@@ -91,7 +109,9 @@ const ScenarioCard = ({
         <p className="text-xs text-secondary">{subtitle}</p>
       </div>
 
-      <div
+      <motion.div
+        layout
+        transition={{ duration: 0.35 }}
         className={`relative min-h-70 overflow-hidden rounded-3xl border border-soft bg-card px-6 pb-6 pt-8 shadow-sm transition-all ${
           disabled ? "opacity-40 grayscale" : ""
         }`}
@@ -139,10 +159,10 @@ const ScenarioCard = ({
         )}
 
         <div className="absolute bottom-3 left-6 right-6">
-          <div className="relative h-3 rounded-full bg-gradient-to-r from-[#2ED47A] via-[#FFC857] to-[#FF5A5F]">
+          <div className="relative h-3 rounded-full bg-gradient-to-r from-[#FF5A5F] via-[#FFC857] to-[#2ED47A]">
             <motion.div
-              initial={{ left: "10%" }}
-              animate={{ left: disabled ? "10%" : markerPosition }}
+              initial={{ left: "0%" }}
+              animate={{ left: disabled ? "0%" : markerPosition }}
               transition={{ duration: 1.4, ease: "easeOut" }}
               className="group absolute top-1/2 -translate-x-1/2 -translate-y-full"
             >
@@ -165,13 +185,13 @@ const ScenarioCard = ({
           </div>
 
           <div className="mt-3 flex justify-between text-[11px] text-secondary">
-            <span>90+ dias</span>
-            <span>60 dias</span>
-            <span>30 dias</span>
             <span>0 dias</span>
+            <span>30 dias</span>
+            <span>60 dias</span>
+            <span>90+ dias</span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -179,25 +199,44 @@ const ScenarioCard = ({
 const Acao = () => {
   const [selectedScenario, setSelectedScenario] = useState("");
 
-  const beforeDays = 32;
+  const { transactions } = useTransactions();
+  const { balances } = useBalances();
+  const { periodSelected } = usePeriods();
+  const { companySelected } = useCompanies();
+
+  const indicators = getIndicatorsPeriod({
+    transactions,
+    balances,
+    periodSelected,
+    companySelectedId: companySelected?.id,
+  });
+
+  const monthlyExpenses = indicators?.monthlyBalance?.total_despesas || 0;
+  const cashAvailable = indicators?.cashAvailable || 0;
+
+  const beforeDays =
+    monthlyExpenses > 0
+      ? Math.max(0, Math.floor(cashAvailable / (monthlyExpenses / 30)))
+      : 0;
 
   const impactByScenario = {
-    lose_client: 14,
-    delivery_drop: 9,
-    cost_increase: 11,
+    lose_client: 52,
+    moderate_drop: 62,
+    close_store: 80,
+    cost_increase: 26,
+    bankruptcy_risk: 116,
   };
 
   const selectedImpact = impactByScenario[selectedScenario] || 0;
-  const afterDays = Math.max(0, beforeDays - selectedImpact);
+
+  const afterDays = selectedScenario
+    ? Math.max(0, beforeDays - selectedImpact)
+    : beforeDays;
 
   const beforeStatus = getScenarioStatus(beforeDays);
   const afterStatus = getScenarioStatus(afterDays);
 
-  const selectedScenarioData = scenarios.find(
-    (scenario) => scenario.id === selectedScenario,
-  );
-
-  const SelectedIcon = selectedScenarioData?.icon;
+  const isSimulationDisabled = !selectedScenario;
 
   return (
     <section className="px-6 pb-8">
@@ -227,41 +266,28 @@ const Acao = () => {
             <div className="flex flex-1 items-center justify-center gap-10">
               <TfiArrowRight className="hidden text-4xl text-primary-purple xl:block" />
 
-              <div className="w-full max-w-[230px]">
+              <div className="w-full max-w-[240px]">
                 <div className="relative">
                   <select
                     value={selectedScenario}
                     onChange={(event) =>
                       setSelectedScenario(event.target.value)
                     }
-                    className="h-[56px] w-full appearance-none rounded-2xl border border-soft bg-gradient-ai px-4 pr-10 text-sm font-semibold text-white shadow-md outline-none transition-all hover:scale-[1.02]"
+                    className="h-[56px] w-full appearance-none rounded-2xl border-1 border-primary-purple bg-hover px-4 pr-10 text-sm text-primary-purple shadow-sm outline-none transition-all focus:ring-2 focus:ring-[#6C63FF]/30"
                   >
-                    <option value="" className="text-primary">
-                      Escolha uma ação
-                    </option>
+                    <option value="">Escolha uma ação</option>
 
                     {scenarios.map((scenario) => (
-                      <option
-                        key={scenario.id}
-                        value={scenario.id}
-                        className="text-primary"
-                      >
+                      <option key={scenario.id} value={scenario.id}>
                         {scenario.label}
                       </option>
                     ))}
                   </select>
 
-                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white">
-                    ▾
+                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-primary-purple">
+                    <MdKeyboardArrowDown className="text-xl" />
                   </span>
                 </div>
-
-                {selectedScenarioData && (
-                  <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-primary-purple">
-                    {SelectedIcon && <SelectedIcon className="text-base" />}
-                    {selectedScenarioData.label}
-                  </div>
-                )}
               </div>
 
               <TfiArrowRight className="hidden text-4xl text-primary-purple xl:block" />
@@ -279,7 +305,7 @@ const Acao = () => {
             image={getScenarioImage(afterDays)}
             markerPosition={getMarkerPosition(afterDays)}
             impact={selectedScenario ? `-${selectedImpact} dias` : null}
-            disabled={!selectedScenario}
+            disabled={isSimulationDisabled}
           />
         </div>
       </div>
