@@ -4,7 +4,7 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 
 ---
 
-## 📑 Sumário
+## 📑 Sumário:
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Objetivo Geral](#objetivo-geral)
 - [Requisitos Técnicos](#requisitos-técnicos)
@@ -17,7 +17,7 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 
 ---
 
-## 📖 Sobre o Projeto
+## 📖 Sobre o Projeto:
 **Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights**  
 
 Este repositório contém o trabalho de conclusão de curso em **Front-End React**, desenvolvido como parte do Hackathon.  
@@ -25,40 +25,40 @@ O objetivo é criar uma aplicação web responsiva e acessível, que demonstre b
 
 ---
 
-## 🎯 Objetivo Geral
+## 🎯 Objetivo Geral:
 Cada equipe deverá desenvolver uma aplicação web utilizando **React** e **JavaScript**, contemplando:
 
-- Simulação de dados financeiros e de consumo (JSON ou API pública simples)  
-- Processamento de dados utilizando lógica em JavaScript  
-- Geração de insights automáticos  
-- Interface frontend interativa e responsiva  
-- Aplicação de boas práticas ágeis (backlog e user stories)  
+- Simulação de dados financeiros e de consumo (JSON ou API pública simples);  
+- Processamento de dados utilizando lógica em JavaScript;  
+- Geração de insights automáticos;  
+- Interface frontend interativa e responsiva;  
+- Aplicação de boas práticas ágeis (backlog e user stories).  
 
 ---
 
-## 🧩 Requisitos Técnicos
+## 🧩 Requisitos Técnicos:
 Cada equipe precisa aplicar TODOS os módulos da formação com os seguintes conceitos:
 
-### 🔹 Dados (simulados ou reais)
-- Uso de JSON local ou API pública (ex: dados financeiros simples)  
-- Estruturação de dados coerente  
-- Documentação da origem ou simulação  
+### 🔹 Dados (simulados ou reais):
+- Uso de JSON local ou API pública (ex: dados financeiros simples);  
+- Estruturação de dados coerente;  
+- Documentação da origem ou simulação.  
 
-### 🔹 Lógica em JavaScript
-- Cálculos financeiros (saldo, variação, média)  
-- Processamento de dados  
-- Geração de insights automáticos  
-- Detecção de padrões de comportamento  
+### 🔹 Lógica em JavaScript:
+- Cálculos financeiros (saldo, variação, média);  
+- Processamento de dados;  
+- Geração de insights automáticos;  
+- Detecção de padrões de comportamento.  
 
-### 🔹 Frontend (React + HTML/CSS)
-- Interface funcional e responsiva  
-- Componentização  
-- Consumo de dados (local ou API)  
-- Visualização clara dos insights (cards, listas, gráficos)  
+### 🔹 Frontend (React + HTML/CSS):
+- Interface funcional e responsiva;  
+- Componentização;  
+- Consumo de dados (local ou API);  
+- Visualização clara dos insights (cards, listas, gráficos).  
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas:
 - [React](https://reactjs.org/)  
 - [JavaScript (ES6+)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)  
 - [HTML5](https://developer.mozilla.org/pt-BR/docs/Web/HTML)  
@@ -68,7 +68,7 @@ Cada equipe precisa aplicar TODOS os módulos da formação com os seguintes con
 
 ---
 
-## ⚙️ Instalação
+## ⚙️ Instalação:
 Clone o repositório e instale as dependências:
 
 ```bash
