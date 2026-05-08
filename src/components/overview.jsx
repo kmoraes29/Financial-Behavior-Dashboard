@@ -363,28 +363,31 @@ const Overview = () => {
               >
                 <div
                   className={`
-                    pointer-events-none
-                    absolute
-                    bottom-[52px]
-                    z-20
-                    w-[150px]
-                    rounded-xl
-                    border
-                    border-soft
-                    bg-white
-                    p-4
-                    shadow-md
-                    opacity-0
-                    transition-all
-                    duration-200
-                    group-hover:-translate-y-1
-                    group-hover:opacity-100
-                    ${
-                      diasAtuais >= 75 || diasAtuais <= 20
-                        ? "right-0"
-                        : "left-1/2 -translate-x-1/2"
-                    }
-                  `}
+    pointer-events-none
+    absolute
+    bottom-[52px]
+    z-20
+    w-[150px]
+    rounded-xl
+    border
+    border-soft
+    bg-white
+    p-4
+    shadow-md
+    opacity-0
+    transition-all
+    duration-200
+    group-hover:-translate-y-1
+    group-hover:opacity-100
+
+    ${
+      diasAtuais >= 75
+        ? "left-0"
+        : diasAtuais <= 20
+          ? "right-0"
+          : "left-1/2 -translate-x-1/2"
+    }
+  `}
                 >
                   <p className="text-sm font-semibold text-primary">Hoje</p>
                   <p className="mb-[-6px] mt-1 text-lg font-bold text-primary">
