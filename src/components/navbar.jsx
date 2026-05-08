@@ -2,16 +2,13 @@ import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { useCompanies } from "../context/EmpresaContext";
-import { useTransactions } from "../context/TransactionsContext";
-import { getAvailablePeriodsFromTransactions } from "../utils/periods";
 import { usePeriods } from "../context/PeriodsContext";
-import { getIndicatorsPeriod } from "../utils/financialIndicators";
 
 const Navbar = () => {
   const [active, setActive] = useState("Visão Geral");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const { companies, companySelected, handleCompanySelected } = useCompanies();
+  const { companies, handleCompanySelected } = useCompanies();
 
   const { periods, periodSelected, handlePeriodSelected } = usePeriods();
 

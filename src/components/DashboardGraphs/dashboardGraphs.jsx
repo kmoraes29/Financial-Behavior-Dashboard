@@ -1,4 +1,3 @@
-import react from "react";
 import ControleDeGastos from "./controleDeGastos";
 import VariacaoDespesas from "./variacaoDespesas";
 import InsightsCard from "./insightsCard";

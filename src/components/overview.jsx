@@ -5,7 +5,6 @@ import GaugeComponent from "react-gauge-component";
 import caminho from "../assets/imagens/caminho.png";
 import caminhoAtencao from "../assets/imagens/caminho-atencao.png";
 import caminhoCritico from "../assets/imagens/caminho-critico.png";
-
 import avatarEstavel from "../assets/imagens/avatar-estavel.png";
 import avatarAtencao from "../assets/imagens/avatar-atencao.png";
 import avatarSobPressao from "../assets/imagens/avatar-sobpressao.png";
@@ -13,7 +12,7 @@ import avatarCritico from "../assets/imagens/avatar-critico.png";
 
 import { BsSuitDiamondFill } from "react-icons/bs";
 import { GiDiamonds } from "react-icons/gi";
-import { IoFlameOutline, IoTrendingUp, IoTrendingDown } from "react-icons/io5";
+import { IoTrendingUp, IoTrendingDown } from "react-icons/io5";
 import {
   FaLocationDot,
   FaFaceSmile,
@@ -24,7 +23,6 @@ import {
 import { MdTrendingFlat } from "react-icons/md";
 
 import { MetricCards } from "./MetricCards";
-
 import { useTransactions } from "../context/TransactionsContext";
 import { useBalances } from "../context/BalancesContext";
 import { usePeriods } from "../context/PeriodsContext";
@@ -230,7 +228,6 @@ const Overview = () => {
 
   const monthlyExpenses = indicators?.monthlyBalance?.total_despesas || 0;
   const cashAvailable = indicators?.cashAvailable || 0;
-
   const diasAtuais =
     monthlyExpenses > 0
       ? Math.max(0, Math.floor(cashAvailable / (monthlyExpenses / 30)))
@@ -239,7 +236,6 @@ const Overview = () => {
   const runwayStatus = getRunwayStatus(diasAtuais);
   const emotionalState = emotionalStates[runwayStatus.key];
   const TrendIcon = emotionalState.trendIcon;
-
   const emotionalFactors = getEmotionalFactors({
     diasAtuais,
     indicators,
@@ -255,7 +251,7 @@ const Overview = () => {
     setDiasAnimados(0);
 
     if (!companySelected?.id || diasAtuais <= 0) {
-      return;
+      return undefined;
     }
 
     let start = 0;
@@ -393,7 +389,6 @@ const Overview = () => {
     }
   `}
                 >
-                  {" "}
                   <p className="text-sm font-semibold text-primary">Hoje</p>
                   <p className="mb-[-6px] mt-1 text-lg font-bold text-primary">
                     {companySelected?.id ? `${diasAtuais} dias` : "--"}
@@ -421,7 +416,7 @@ const Overview = () => {
           </div>
         </div>
 
-        <MetricCards loading={loadingTransaction} />
+        <MetricCards indicators={indicators} loading={loadingTransaction} />
 
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
           <h2 className="text-sm font-bold uppercase text-primary">
@@ -446,9 +441,7 @@ const Overview = () => {
                 <div
                   className={`flex items-center gap-1 font-semibold ${emotionalState.color}`}
                 >
-                  <span>
-                    {companySelected?.id ? emotionalState.trend : "--"}
-                  </span>
+                  <span>{companySelected?.id ? emotionalState.trend : "--"}</span>
                   <TrendIcon className="text-base" />
                 </div>
               </div>
