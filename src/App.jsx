@@ -7,6 +7,7 @@ import { TransactionsProvider } from "./context/TransactionsContext";
 import { BalancesProvider } from "./context/BalancesContext";
 import { CompaniesProvider } from "./context/EmpresaContext";
 import { PeriodsProvider } from "./context/PeriodsContext";
+import { ClientsProvider } from "./context/ClientContext";
 
 function App() {
   return (
@@ -15,10 +16,14 @@ function App() {
         <PeriodsProvider>
           <BalancesProvider>
             <CompaniesProvider>
-              <Navbar />
-              <Overview />
-              <DashboardGraphs />
-              <Acao />
+              <ClientsProvider>
+
+                <Navbar />
+                <Overview />
+                <DashboardGraphs />
+                <Acao />
+              
+              </ClientsProvider>
             </CompaniesProvider>
           </BalancesProvider>
         </PeriodsProvider>
