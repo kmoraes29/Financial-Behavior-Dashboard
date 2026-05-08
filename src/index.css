@@ -96,6 +96,14 @@
   color: #7C4DFF;
 }
 
+.bg-warning-soft {
+  background-color: #FFF8EA;
+}
+
+.bg-defensive-soft {
+  background-color: #F8F3FF;
+}
+
   /* Gradientes */
   .bg-gradient-ai {
     background: linear-gradient(90deg, #6C63FF, #4DA3FF);
