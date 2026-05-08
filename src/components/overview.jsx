@@ -3,13 +3,16 @@ import { motion } from "framer-motion";
 import GaugeComponent from "react-gauge-component";
 
 import caminho from "../assets/imagens/caminho.png";
+import caminhoAtencao from "../assets/imagens/caminho-atencao.png";
+import caminhoCritico from "../assets/imagens/caminho-critico.png";
 import avatarEstavel from "../assets/imagens/avatar-estavel.png";
 import avatarAtencao from "../assets/imagens/avatar-atencao.png";
 import avatarSobPressao from "../assets/imagens/avatar-sobpressao.png";
 import avatarCritico from "../assets/imagens/avatar-critico.png";
 
 import { BsSuitDiamondFill } from "react-icons/bs";
-import { IoFlameOutline, IoTrendingUp, IoTrendingDown } from "react-icons/io5";
+import { GiDiamonds } from "react-icons/gi";
+import { IoTrendingUp, IoTrendingDown } from "react-icons/io5";
 import {
   FaLocationDot,
   FaFaceSmile,
@@ -17,9 +20,21 @@ import {
   FaFaceFrown,
   FaFaceTired,
 } from "react-icons/fa6";
-
 import { MdTrendingFlat } from "react-icons/md";
+
 import { MetricCards } from "./MetricCards";
+import { useTransactions } from "../context/TransactionsContext";
+import { useBalances } from "../context/BalancesContext";
+import { usePeriods } from "../context/PeriodsContext";
+import { useCompanies } from "../context/EmpresaContext";
+import { getIndicatorsPeriod } from "../utils/financialIndicators";
+
+const COLORS = {
+  success: "#2ED47A",
+  warning: "#FFC857",
+  danger: "#FF5A5F",
+  medium: "#FF8A65",
+};
 
 const emotionalStates = {
   estavel: {
@@ -32,7 +47,6 @@ const emotionalStates = {
     gaugeValue: 88,
     emoji: FaFaceSmile,
   },
-
   atencao: {
     title: "Em Atenção",
     description: "Alguns indicadores começaram a oscilar.",
@@ -43,7 +57,6 @@ const emotionalStates = {
     gaugeValue: 68,
     emoji: FaFaceMeh,
   },
-
   sobpressao: {
     title: "Sob Pressão",
     description: "Sua empresa está reagindo mais do que planejando.",
@@ -54,7 +67,6 @@ const emotionalStates = {
     gaugeValue: 42,
     emoji: FaFaceFrown,
   },
-
   critico: {
     title: "Crítico",
     description: "A estabilidade financeira está em risco.",
@@ -67,11 +79,97 @@ const emotionalStates = {
   },
 };
 
-const COLORS = {
-  success: "#2ED47A",
-  warning: "#FFC857",
-  danger: "#FF5A5F",
-  medium: "#FF8A65",
+const getMarkerPosition = (days) => {
+  const safeDays = Math.max(0, Math.min(days, 90));
+  const position = 100 - (safeDays / 90) * 100;
+
+  return `${position}%`;
+};
+
+const getRunwayStatus = (days) => {
+  if (days >= 90) {
+    return {
+      key: "estavel",
+      label: "Zona Segura",
+      color: "text-success",
+      bg: "bg-success-soft",
+      image: caminho,
+      markerPosition: getMarkerPosition(days),
+    };
+  }
+
+  if (days >= 60) {
+    return {
+      key: "estavel",
+      label: "Zona Estável",
+      color: "text-success",
+      bg: "bg-success-soft",
+      image: caminho,
+      markerPosition: getMarkerPosition(days),
+    };
+  }
+
+  if (days >= 30) {
+    return {
+      key: "sobpressao",
+      label: "Zona de Atenção",
+      color: "text-warning",
+      bg: "bg-warning-soft",
+      image: caminhoAtencao,
+      markerPosition: getMarkerPosition(days),
+    };
+  }
+
+  return {
+    key: "critico",
+    label: "Zona Crítica",
+    color: "text-danger",
+    bg: "bg-danger-soft",
+    image: caminhoCritico,
+    markerPosition: getMarkerPosition(days),
+  };
+};
+
+const getEmotionalFactors = ({ diasAtuais, indicators }) => {
+  if (!indicators) {
+    return [
+      "Selecione uma empresa para gerar fatores automáticos",
+      "Aguardando dados do período selecionado",
+      "Análise será atualizada em tempo real",
+    ];
+  }
+
+  const factors = [];
+
+  if (diasAtuais < 30) {
+    factors.push("Runway abaixo de 30 dias");
+  } else if (diasAtuais < 60) {
+    factors.push("Runway em zona de atenção");
+  } else {
+    factors.push("Runway dentro da faixa operacional");
+  }
+
+  if (indicators.cashOutVariation > 0) {
+    factors.push("Despesas cresceram em relação ao mês anterior");
+  } else {
+    factors.push("Despesas controladas no período");
+  }
+
+  if (indicators.cashInVariation < 0) {
+    factors.push("Receitas caíram em relação ao mês anterior");
+  } else {
+    factors.push("Receitas estáveis ou em crescimento");
+  }
+
+  if (indicators.monthlyBalance?.resultado_mes < 0) {
+    factors.push("Saldo mensal negativo");
+  }
+
+  if (indicators.balanceVariation < 0) {
+    factors.push("Resultado mensal pior que o mês anterior");
+  }
+
+  return factors.slice(0, 3);
 };
 
 const EmotionalGauge = ({ value, emoji: EmojiIcon, color }) => {
@@ -113,29 +211,35 @@ const EmotionalGauge = ({ value, emoji: EmojiIcon, color }) => {
   );
 };
 
-const emotionalFactors = [
-  "Gastos reativos acima do ideal",
-  "Despesas crescendo mais que receitas",
-  "Poucas ações estratégicas nos últimos 60 dias",
-];
-
-const getHorizonStatus = (days) => {
-  if (days >= 60) {
-    return { label: "Zona Segura", className: "text-success" };
-  }
-
-  if (days >= 30) {
-    return { label: "Zona de Atenção", className: "text-warning" };
-  }
-
-  return { label: "Zona Crítica", className: "text-danger" };
-};
-
 const Overview = () => {
+  const { transactions, loadingTransaction } = useTransactions();
+  const { balances } = useBalances();
+  const { periodSelected } = usePeriods();
+  const { companySelected } = useCompanies();
+
   const [diasAnimados, setDiasAnimados] = useState(0);
-  const diasAtuais = 32;
-  const emotionalState = emotionalStates.sobpressao;
+
+  const indicators = getIndicatorsPeriod({
+    transactions,
+    balances,
+    periodSelected,
+    companySelectedId: companySelected?.id,
+  });
+
+  const monthlyExpenses = indicators?.monthlyBalance?.total_despesas || 0;
+  const cashAvailable = indicators?.cashAvailable || 0;
+  const diasAtuais =
+    monthlyExpenses > 0
+      ? Math.max(0, Math.floor(cashAvailable / (monthlyExpenses / 30)))
+      : 0;
+
+  const runwayStatus = getRunwayStatus(diasAtuais);
+  const emotionalState = emotionalStates[runwayStatus.key];
   const TrendIcon = emotionalState.trendIcon;
+  const emotionalFactors = getEmotionalFactors({
+    diasAtuais,
+    indicators,
+  });
 
   const dataAtual = new Date().toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -144,16 +248,16 @@ const Overview = () => {
   });
 
   useEffect(() => {
-    let start = 0;
-    const end = diasAtuais;
+    setDiasAnimados(0);
 
-    if (end <= 0) {
-      setDiasAnimados(0);
+    if (!companySelected?.id || diasAtuais <= 0) {
       return undefined;
     }
 
+    let start = 0;
+    const end = diasAtuais;
     const duration = 1600;
-    const incrementTime = duration / end;
+    const incrementTime = Math.max(20, duration / end);
 
     const counter = setInterval(() => {
       start += 1;
@@ -165,28 +269,33 @@ const Overview = () => {
     }, incrementTime);
 
     return () => clearInterval(counter);
-  }, []);
+  }, [diasAtuais, companySelected?.id]);
 
   return (
     <section className="p-6">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        {/* Horizonte de Caixa */}
         <div className="relative flex min-h-[430px] flex-col overflow-hidden rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-7">
           <div className="relative z-10">
             <h2 className="text-sm font-bold uppercase text-primary">
               Horizonte de Caixa
             </h2>
+
             <p className="mt-1 text-xs text-secondary">
               Atualizado em {dataAtual}
             </p>
 
             <div className="mt-8 flex items-end gap-3">
-              <span className="text-7xl font-bold leading-none text-success">
-                {diasAnimados}
+              <span
+                className={`text-7xl font-bold leading-none ${runwayStatus.color}`}
+              >
+                {companySelected?.id ? diasAnimados : "--"}
               </span>
 
               <div className="mb-2">
-                <p className="text-lg font-semibold text-success">dias</p>
+                <p className={`text-lg font-semibold ${runwayStatus.color}`}>
+                  dias
+                </p>
+
                 <p className="text-sm leading-5 text-primary">
                   de estabilidade <br /> operacional
                 </p>
@@ -194,39 +303,41 @@ const Overview = () => {
             </div>
 
             <div
-              className="mt-5 inline-flex items-center gap-1 rounded-full bg-[#FFF4D6] px-3 py-2 text-xs font-semibold text-warning"
-              title="Zona de Atenção"
+              className={`mt-5 inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-semibold ${runwayStatus.bg} ${runwayStatus.color}`}
             >
-              <BsSuitDiamondFill /> Zona de Atenção
+              <BsSuitDiamondFill />
+              {companySelected?.id
+                ? runwayStatus.label
+                : "Selecione uma empresa"}
             </div>
           </div>
 
           <img
-            src={caminho}
+            src={runwayStatus.image}
             alt="Caminho representando horizonte de caixa"
             className="
-    relative
-    z-0
-    h-[70%]
-    w-full
-    object-contain
-    opacity-90
+              relative
+              z-0
+              h-[70%]
+              w-full
+              object-contain
+              opacity-90
 
-    md:absolute
-    md:right-8
-    md:top-[-20px]
-    md:mt-14
-    md:h-auto
-    md:w-[75%]
+              md:absolute
+              md:right-8
+              md:top-[-20px]
+              md:mt-14
+              md:h-auto
+              md:w-[75%]
 
-    lg:right-12
-    lg:top-[-50px]
-    lg:w-[68%]
+              lg:right-12
+              lg:top-[-50px]
+              lg:w-[68%]
 
-    xl:right-16
-    xl:top-[-80px]
-    xl:w-[75%]
-  "
+              xl:right-16
+              xl:top-[-80px]
+              xl:w-[75%]
+            "
           />
 
           <div className="absolute right-8 top-10 z-10 rounded-2xl border border-soft bg-white/85 p-4 shadow-sm backdrop-blur">
@@ -235,35 +346,61 @@ const Overview = () => {
             <p className="text-xs text-success">Zona Segura</p>
           </div>
 
-          <div className="relative z-10 mt-8 lg:mt-auto">
+          <div className="relative z-10 mt-auto pt-8">
             <div className="relative h-4 rounded-full bg-gradient-to-r from-[#2ED47A] via-[#FFC857] to-[#FF5A5F]">
               <motion.div
                 initial={{ left: "8%" }}
-                animate={{ left: "68%" }}
+                animate={{
+                  left: companySelected?.id
+                    ? runwayStatus.markerPosition
+                    : "8%",
+                }}
                 transition={{
                   duration: 2,
                   ease: "easeOut",
                 }}
                 className="group absolute top-1/2 -translate-x-1/2 -translate-y-full"
               >
-                <div className="pointer-events-none absolute bottom-[52px] left-1/2 z-20 w-[140px] -translate-x-1/2 rounded-xl border border-soft bg-white p-4 shadow-md opacity-0 transition-all duration-200 group-hover:-translate-y-1 group-hover:opacity-100">
+                <div
+                  className={`
+                    pointer-events-none
+                    absolute
+                    bottom-[52px]
+                    z-20
+                    w-[150px]
+                    rounded-xl
+                    border
+                    border-soft
+                    bg-white
+                    p-4
+                    shadow-md
+                    opacity-0
+                    transition-all
+                    duration-200
+                    group-hover:-translate-y-1
+                    group-hover:opacity-100
+                    ${
+                      diasAtuais >= 75 || diasAtuais <= 20
+                        ? "right-0"
+                        : "left-1/2 -translate-x-1/2"
+                    }
+                  `}
+                >
                   <p className="text-sm font-semibold text-primary">Hoje</p>
-
                   <p className="mb-[-6px] mt-1 text-lg font-bold text-primary">
-                    {diasAtuais} dias
+                    {companySelected?.id ? `${diasAtuais} dias` : "--"}
                   </p>
-
                   <p className="text-xs text-secondary">restantes</p>
-
                   <p className="mt-1 text-xs">
                     Zona:
-                    <span className="font-semibold text-warning"> Atenção</span>
+                    <span className={`font-semibold ${runwayStatus.color}`}>
+                      {" "}
+                      {companySelected?.id ? runwayStatus.label : "--"}
+                    </span>
                   </p>
                 </div>
 
-                <div className="relative flex flex-col items-center">
-                  <FaLocationDot className="text-[42px] text-[#6C63FF] drop-shadow-[0_4px_10px_rgba(108,99,255,0.35)]" />
-                </div>
+                <FaLocationDot className="text-[42px] text-[#6C63FF] drop-shadow-[0_4px_10px_rgba(108,99,255,0.35)]" />
               </motion.div>
             </div>
 
@@ -276,24 +413,23 @@ const Overview = () => {
           </div>
         </div>
 
-        {/* Cards de métricas */}
-        <MetricCards />
+        <MetricCards indicators={indicators} loading={loadingTransaction} />
 
-        {/* Estado emocional */}
         <div className="rounded-3xl border border-soft bg-card p-6 shadow-sm xl:col-span-3">
           <h2 className="text-sm font-bold uppercase text-primary">
             Estado Emocional da Empresa
           </h2>
 
           <div className="mt-5 flex items-start justify-between gap-4">
-            {/* Conteúdo esquerdo */}
             <div className="flex-1">
               <h3 className={`text-2xl font-bold ${emotionalState.color}`}>
-                {emotionalState.title}
+                {companySelected?.id ? emotionalState.title : "Aguardando"}
               </h3>
 
               <p className="mt-4 text-xs leading-4 text-primary">
-                {emotionalState.description}
+                {companySelected?.id
+                  ? emotionalState.description
+                  : "Selecione uma empresa para analisar o estado emocional financeiro."}
               </p>
 
               <div className="mt-5 flex items-center gap-2 text-xs text-secondary">
@@ -302,22 +438,20 @@ const Overview = () => {
                 <div
                   className={`flex items-center gap-1 font-semibold ${emotionalState.color}`}
                 >
-                  <span>{emotionalState.trend}</span>
-
+                  <span>{companySelected?.id ? emotionalState.trend : "--"}</span>
                   <TrendIcon className="text-base" />
                 </div>
               </div>
 
               <div className="mt-6">
                 <EmotionalGauge
-                  value={emotionalState.gaugeValue}
+                  value={companySelected?.id ? emotionalState.gaugeValue : 0}
                   emoji={emotionalState.emoji}
                   color={emotionalState.color}
                 />
               </div>
             </div>
 
-            {/* Avatar */}
             <div className="flex justify-end">
               <img
                 src={emotionalState.avatar}
@@ -335,8 +469,8 @@ const Overview = () => {
             <div className="mt-4 space-y-3">
               {emotionalFactors.map((factor) => (
                 <div key={factor} className="flex items-center gap-3">
-                  <div className="flex size-5 items-center justify-center rounded-full bg-[#FFF0F1] text-danger">
-                    <IoFlameOutline size={12} />
+                  <div className="flex size-5 items-center justify-center rounded-full bg-blue-100 text-secondary">
+                    <GiDiamonds size={12} />
                   </div>
 
                   <p className="text-xs text-primary">{factor}</p>
