@@ -18,7 +18,7 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 ---
 
 ## 📖 Sobre o projeto:
-**Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights**  
+**Sistema Inteligente de Análise de Perfil Financeiro, Consumo e Geração de Insights**.  
 
 Este repositório contém o trabalho de conclusão de curso em **Front-End React**, desenvolvido como parte do Hackathon.  
 O objetivo é criar uma aplicação web responsiva e acessível, que demonstre boas práticas de desenvolvimento e design de interfaces, simulando o comportamento de plataformas modernas que integram dados de consumo e finanças para apoiar decisões.
