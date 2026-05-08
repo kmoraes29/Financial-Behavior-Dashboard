@@ -81,7 +81,7 @@ const emotionalStates = {
 
 const getMarkerPosition = (days) => {
   const safeDays = Math.max(0, Math.min(days, 90));
-  const position = 100 - (safeDays / 90) * 100;
+  const position = (safeDays / 90) * 100;
 
   return `${position}%`;
 };
@@ -347,13 +347,13 @@ const Overview = () => {
           </div>
 
           <div className="relative z-10 mt-auto pt-8">
-            <div className="relative h-4 rounded-full bg-gradient-to-r from-[#2ED47A] via-[#FFC857] to-[#FF5A5F]">
+            <div className="relative h-4 rounded-full bg-gradient-to-l from-[#2ED47A] via-[#FFC857] to-[#FF5A5F]">
               <motion.div
-                initial={{ left: "8%" }}
+                initial={{ left: "0%" }}
                 animate={{
                   left: companySelected?.id
                     ? runwayStatus.markerPosition
-                    : "8%",
+                    : "0%",
                 }}
                 transition={{
                   duration: 2,
@@ -381,11 +381,13 @@ const Overview = () => {
     group-hover:opacity-100
 
     ${
-      diasAtuais >= 75
-        ? "left-0"
-        : diasAtuais <= 20
+      !companySelected?.id
+        ? "right-0"
+        : diasAtuais >= 75
           ? "right-0"
-          : "left-1/2 -translate-x-1/2"
+          : diasAtuais <= 20
+            ? "left-0"
+            : "left-1/2 -translate-x-1/2"
     }
   `}
                 >
@@ -408,10 +410,10 @@ const Overview = () => {
             </div>
 
             <div className="mt-3 flex justify-between text-xs text-secondary">
-              <span>90+ dias</span>
-              <span>60 dias</span>
-              <span>30 dias</span>
               <span>0 dias</span>
+              <span>30 dias</span>
+              <span>60 dias</span>
+              <span>90+ dias</span>
             </div>
           </div>
         </div>

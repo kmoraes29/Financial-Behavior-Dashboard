@@ -252,7 +252,7 @@ const Acao = () => {
             markerPosition={getMarkerPosition(beforeDays)}
           />
 
-          <div className="flex h-full min-w-[360px] flex-col">
+          <div className="flex h-full w-full flex-col xl:min-w-[360px]">
             <div className="mb-2 text-center">
               <h3 className="text-sm font-bold uppercase text-primary-purple">
                 Ação
@@ -266,7 +266,7 @@ const Acao = () => {
             <div className="flex flex-1 items-center justify-center gap-10">
               <TfiArrowRight className="hidden text-4xl text-primary-purple xl:block" />
 
-              <div className="w-full max-w-[240px]">
+              <div className="hidden w-full max-w-[240px] md:block">
                 <div className="relative">
                   <select
                     value={selectedScenario}
@@ -288,6 +288,29 @@ const Acao = () => {
                     <MdKeyboardArrowDown className="text-xl" />
                   </span>
                 </div>
+              </div>
+
+              <div className="grid w-full gap-3 md:hidden">
+                {scenarios.map((scenario) => {
+                  const Icon = scenario.icon;
+                  const isSelected = selectedScenario === scenario.id;
+
+                  return (
+                    <button
+                      key={scenario.id}
+                      type="button"
+                      onClick={() => setSelectedScenario(scenario.id)}
+                      className={`flex items-center gap-3 rounded-2xl border p-4 text-left text-xs font-semibold transition-all ${
+                        isSelected
+                          ? "border-primary-purple bg-hover text-primary-purple"
+                          : "border-soft bg-card text-primary"
+                      }`}
+                    >
+                      <Icon className="text-lg" />
+                      <span>{scenario.label}</span>
+                    </button>
+                  );
+                })}
               </div>
 
               <TfiArrowRight className="hidden text-4xl text-primary-purple xl:block" />
