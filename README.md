@@ -5,15 +5,27 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 ---
 
 ## 📑 Sumário:
+- [Features](#features)
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Objetivo Geral](#objetivo-geral)
 - [Requisitos Técnicos](#requisitos-técnicos)
+- [Principais Aprendizados](#principais-aprendizados)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instalação](#instalação)
 - [Como Usar](#como-usar)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
+
+---
+
+## ✨ Features
+
+- Interactive operational runway
+- Financial scenario simulation
+- Emotional business state analysis
+- Responsive dashboard experience
+- Behavioral financial visualization
 
 ---
 
@@ -55,6 +67,19 @@ Desenvolver uma aplicação web utilizando **React** e **JavaScript**, contempla
 - Componentização;  
 - Consumo de dados (local ou API);  
 - Visualização clara dos insights (cards, listas, gráficos).  
+
+---
+
+## 🧠 Principais Aprendizados:
+
+Este projeto reforçou a importância de equilibrar:
+
+- storytelling visual
+- interação com dados
+- fluxos reais de usuário
+- experiência de tomada de decisão (UX)
+
+Mais do que criar dashboards visualmente atraentes, exploramos como o comportamento financeiro pode ser traduzido em inteligência operacional interativa.
 
 ---
 
