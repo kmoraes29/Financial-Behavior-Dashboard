@@ -2,6 +2,9 @@
 
 Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, com foco em soluções de impacto social utilizando **React** no Front-End.
 
+![Dashboard Overview](public/dashboardpreview.png)
+![Dashboard Bottom](public/dashboard-end.png)
+
 ---
 
 ## 📑 Sumário:
