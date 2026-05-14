@@ -7,21 +7,6 @@ Projeto desenvolvido durante o Hackathon **Ada Tech + Artemisia Elas+ Tech**, co
 
 ---
 
-## 📑 Sumário:
-- [Features](#features)
-- [Sobre o Projeto](#sobre-o-projeto)
-- [Objetivo Geral](#objetivo-geral)
-- [Requisitos Técnicos](#requisitos-técnicos)
-- [Principais Aprendizados](#principais-aprendizados)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Instalação](#instalação)
-- [Como Usar](#como-usar)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
-
----
-
 ## ✨ Features
 
 - Interactive operational runway
@@ -93,6 +78,32 @@ Mais do que criar dashboards visualmente atraentes, exploramos como o comportame
 - [CSS3](https://developer.mozilla.org/pt-BR/docs/Web/CSS)  
 - [Node.js](https://nodejs.org/)  
 - [Git](https://git-scm.com/)  
+
+---
+
+## 📊 Mudança de Cenários
+
+Os cenários trocam de cor para chamar atenção do usuário conforme a situação financeira da empresa.
+
+![PositiveScreen](public/positivescreen.png)
+![MediumScreen](public/mediumscreen.png)
+![NegativeScreen](public/negativescreen.png)
+
+---
+
+## 🔮 Simulação de Impacto Operacional
+
+A dashboard permite simular decisões operacionais e visualizar, em tempo real, os impactos no horizonte financeiro da empresa.
+
+![BottomPositive](public/bottom-positive.png)
+![BottomMedium](public/bottom-medium.png)
+![BottomNegative](public/bottom-negative.png)
+
+---
+
+## 📱 Responsive Experience
+
+![ResponsiveExperience](public/mobile.png)
 
 ---
 
